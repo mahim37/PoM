@@ -8,7 +8,7 @@ import TransferTokens from "./components/TransferTokens";
 import { useAppContext } from "./components/AppContext";
 import AuthButton from "./components/AuthButton";
 import SendRawTransaction from "./components/SendRawTransaction";
-
+import {fun} from './api/farcaster';
 export default function Home() {
   const { data: session } = useSession();
   const { setApiKey, buildType, setBuildType } = useAppContext();
