@@ -9,6 +9,8 @@ import { useAppContext } from "./components/AppContext";
 import AuthButton from "./components/AuthButton";
 import SendRawTransaction from "./components/SendRawTransaction";
 import {fun} from './api/farcaster';
+import { useRouter } from "next/navigation";
+
 export default function Home() {
   const { data: session } = useSession();
   const { setApiKey, buildType, setBuildType } = useAppContext();
@@ -29,7 +31,8 @@ export default function Home() {
     showWidgetModal,
     executeRawTransaction,
   } = useOkto() as OktoContextType;
-  const idToken = useMemo(() => (session ? session.id_token : null), [session]);
+  const idToken = useMemo(() => (session && session.id_token ? session.id_token : null), [session]);
+  const router = useRouter();
 
   useEffect(() => {
     const envApiKey = process.env.NEXT_PUBLIC_OKTO_API_KEY;
@@ -58,6 +61,7 @@ export default function Home() {
         if (result) {
           console.log("Authentication successful");
           resolve({ result: true });
+          router.push('/dashboard'); // Redirect to dashboard after successful authentication
         } else if (error) {
           console.error("Authentication error:", error);
           resolve({ result: false, error });
@@ -103,33 +107,33 @@ export default function Home() {
         <LoginButton />
         <GetButton title="Okto Authenticate" apiFn={handleAuthenticate} />
         {/* <AuthButton authenticateWithUserId={authenticateWithUserId} /> */}
-        <GetButton title="Okto Log out" apiFn={handleLogout} />
+        {/* <GetButton title="Okto Log out" apiFn={handleLogout} />
         <GetButton title="getPortfolio" apiFn={getPortfolio} />
         <GetButton title="getSupportedNetworks" apiFn={getSupportedNetworks} />
         <GetButton title="getSupportedTokens" apiFn={getSupportedTokens} />
         <GetButton title="getUserDetails" apiFn={getUserDetails} />
         <GetButton title="getWallets" apiFn={getWallets} />
         <GetButton title="createWallet" apiFn={createWallet} />
-        <GetButton title="orderHistory" apiFn={() => orderHistory({})} />
+        <GetButton title="orderHistory" apiFn={() => orderHistory({})} /> */}
         {/* <GetButton title="getRawTransactionStatus" apiFn={() => getRawTransactionStatus({})} /> */}
 
-        <GetButton
+        {/* <GetButton
           title="getNftOrderDetails"
           apiFn={() => getNftOrderDetails({})}
-        />
-        <button
+        /> */}
+        {/* <button
           className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           onClick={() => {
             showWidgetModal();
           }}
         >
           Show Modal
-        </button>
+        </button> */}
       </div>
-      <div className="flex flex-col gap-2 w-full max-w-lg">
+      {/* <div className="flex flex-col gap-2 w-full max-w-lg">
         <TransferTokens apiFn={transferTokens} />
         <SendRawTransaction apiFn={executeRawTransaction} />
-      </div>
+      </div> */}
     </main>
   );
 }
