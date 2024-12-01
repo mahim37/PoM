@@ -1,0 +1,15 @@
+[package]
+name = "main_module_working_sure"
+version = "2.0.0"
+authors = []
+
+[addresses]
+parent_address = "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365"
+[dev-addresses]
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-framework.git"
+rev = "testnet"
+subdir = "aptos-framework"
+
+[dev-dependencies]
