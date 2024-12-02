@@ -46,7 +46,7 @@ export const transferTokens = async (transferData: any): Promise<any> => {
   return await transferTokens(transferData);
 };
 
-export const getWallets = async (): Promise<any> => {
+export const useGetWallets = async (): Promise<any> => {
   const { getWallets } = useOkto() as OktoContextType;
   return await getWallets();
 };
