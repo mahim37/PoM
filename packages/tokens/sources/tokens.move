@@ -1,17 +1,23 @@
-module token_owner::fungible_asset_pom{
+module token_owner::fungible_asset_pom_hello{
     use aptos_framework::fungible_asset::{Self, MintRef, TransferRef, BurnRef, Metadata, FungibleAsset};
     use aptos_framework::object::{Self, Object};
     use aptos_framework::primary_fungible_store::{Self};
+
+    use aptos_framework::aptos_coin::AptosCoin;
+
+    use switchboard::aggregator;
+    use switchboard::math;
 
     use std::error;
     use std::signer;
     use std::string::utf8;
     use std::option;
-
+    use std::vector; 
+    use std::debug;
     /// Only fungible asset metadata owner can make changes.
     const ENOT_OWNER: u64 = 1;
 
-    const ASSET_SYMBOL: vector<u8> = b"META";
+    const ASSET_SYMBOL: vector<u8> = b"FMN";
 
     #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
     /// Hold refs to control the minting, transfer and burning of fungible assets.
@@ -27,11 +33,11 @@ module token_owner::fungible_asset_pom{
         primary_fungible_store::create_primary_store_enabled_fungible_asset(
             constructor_ref,
             option::none(),
-            utf8(b"META Coin"), /* name */
+            utf8(b"First Meme NFT"), /* name */
             utf8(ASSET_SYMBOL), /* symbol */
             8, /* decimals */
-            utf8(b"https://drive.google.com/file/d/1vFm-kF6O3onxPgFJ_rVLh9YGFT_fFWM6/view?usp=sharing"), /* icon */
-            utf8(b"http://metaschool.so"), /* project */
+            utf8(b"https://crossmint.myfilebase.com/ipfs/QmZHAwoi3AgvGxdiPaEtYdp97SDEHEmJqJyWmsVrmaX6bH"), /* icon */
+            utf8(b"http://proof_of_follower.so"), /* project */
         );
 
         // Create mint/burn/transfer refs to allow creator to manage the fungible asset.
@@ -55,8 +61,23 @@ module token_owner::fungible_asset_pom{
         fungible_asset::deposit_with_ref(&managed_fungible_asset.transfer_ref, to_wallet, fa);
     }// <:!:mint
 
+
+    #[view]
+    public fun get_price_feed_address(aggregator_addr: address): (u128, u128) {
+        let min_response = aggregator::lastest_round_min_response(aggregator_addr);
+        let max_response = aggregator::lastest_round_max_response(aggregator_addr);
+        
+        let (min_val, _, _) = math::unpack(min_response);
+        let (max_val, _, _) = math::unpack(max_response);
+        (min_val, max_val)
+    }
+
     /// Transfer as the owner of metadata object ignoring `frozen` field.
     public entry fun transfer(from: &signer, to: address, amount: u64) {
+        let (min_val, max_val) = get_price_feed_address(@price_feed_address2);
+        if (max_val - min_val > 50){
+            abort(1)
+        };
         let asset = get_metadata();
         let from_addr = signer::address_of(from);
         let from_wallet = primary_fungible_store::primary_store(from_addr, asset);
@@ -201,6 +222,4 @@ module token_owner::fungible_asset_pom{
     public fun test_init_module(owner: &signer) {
         init_module(owner);
     }
-
-
 }

@@ -1,11 +1,13 @@
 [package]
-name = "tokens"
-version = "1.0.0"
+name = "please_work_hello_why"
+version = "2.0.0"
 authors = []
 
 [addresses]
 parent_address="918cfa685a625de5f59046c595d770bb8983f18734ce0b4088cfb819ee57894f"
-token_owner="c987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365"
+token_owner="0x38f99eaf2dddddd9320376154ef782d837f75fb303980cfb1d965a8b0ce41bcb"
+switchboard = "0xb91d3fef0eeb4e685dc85e739c7d3e2968784945be4424e92e2f86e2418bf271"
+price_feed_address2 = "0xaed26d8d0b766f6e10df12b560f344a6d2bcb3df4e64ebb3f257df182b781003"
 
 [dev-addresses]
 
@@ -13,5 +15,12 @@ token_owner="c987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365"
 git = "https://github.com/aptos-labs/aptos-framework.git"
 rev = "mainnet"
 subdir = "aptos-framework"
+
+[dependencies.Switchboard]
+git = "https://github.com/switchboard-xyz/sbv2-aptos.git"
+subdir = "move/switchboard/testnet/"
+rev = "main"
+
+
 
 [dev-dependencies]
