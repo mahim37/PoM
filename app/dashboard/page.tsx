@@ -4,7 +4,7 @@ import { useLogout, useGetWallets } from "../../index"; // Path to the custom ho
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useOkto, OktoContextType } from "okto-sdk-react";
-import  SendRawTransaction  from "../components/SendRawTransaction";
+import SendRawTransaction from "../components/SendRawTransaction";
 
 const Page = () => {
   const handleLogout = useLogout();
@@ -51,22 +51,22 @@ const Page = () => {
 
       if (data.score !== undefined) {
         const requestData = {
-            network_name: "APTOS_TESTNET",
-            transaction: {
-              transactions: [
-                {
-                  function:
-                    "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365::main_module_working_sure::add_token_votes",
-                  typeArguments: [],
-                  functionArguments: ["temp_meme", Math.round(data.score)],
-                },
-              ],
-            },
-          };
-        
+          network_name: "APTOS_TESTNET",
+          transaction: {
+            transactions: [
+              {
+                function:
+                  "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365::main_module_working_sure::add_token_votes",
+                typeArguments: [],
+                functionArguments: ["temp_meme", Math.round(data.score)],
+              },
+            ],
+          },
+        };
+
         const res = await executeRawTransaction(requestData);
         console.log(res);
-    }
+      }
     } catch (error) {
       console.error("Error updating score:", error);
     }
@@ -112,26 +112,26 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-100">
       <button
         onClick={handleLogout}
-        className="absolute top-4 right-4 px-5 py-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+        className="absolute top-4 right-4 px-5 py-2 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400"
       >
         Okto Logout
       </button>
       <button
         onClick={handleGetWallets}
-        className="absolute top-4 left-4 px-5 py-2 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="absolute top-4 left-4 px-5 py-2 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
       >
         Get Wallets
       </button>
 
-      <h1 className="text-3xl font-bold mb-10 text-gray-700">NFT's</h1>
+      <h1 className="text-3xl font-bold mb-10 text-purple-300">NFT's</h1>
       <div className="flex flex-col items-center gap-4 px-6 md:px-20">
         {images.map((image, index) => (
           <div
             key={index}
-            className="flex flex-col items-center bg-white rounded-lg shadow-lg p-3 border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+            className="flex flex-col items-center bg-gray-800 rounded-lg shadow-lg p-3 border border-gray-700 hover:shadow-xl transition-shadow duration-300"
           >
             <img
               src={image}
@@ -141,13 +141,13 @@ const Page = () => {
             <div className="flex space-x-6">
               <button
                 onClick={() => handleLike(index)}
-                className="px-4 py-2 bg-green-500 text-white rounded-full shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="px-4 py-2 bg-purple-600 text-white rounded-full shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400"
               >
                 👍 Like ({likes[index]})
               </button>
               <button
                 onClick={() => handleDislike(index)}
-                className="px-4 py-2 bg-gray-500 text-white rounded-full shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                className="px-4 py-2 bg-gray-600 text-white rounded-full shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400"
               >
                 👎 Dislike ({dislikes[index]})
               </button>
@@ -156,25 +156,25 @@ const Page = () => {
         ))}
       </div>
       {walletsVisible && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-black rounded-lg w-11/12 max-w-2xl p-6">
-            <div className="flex justify-between items-center border-b pb-2 mb-4">
-              <h2 className="text-lg font-semibold">Wallets</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center">
+          <div className="bg-gray-800 rounded-lg w-11/12 max-w-2xl p-6">
+            <div className="flex justify-between items-center border-b border-gray-700 pb-2 mb-4">
+              <h2 className="text-lg font-semibold text-purple-300">Wallets</h2>
               <button
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-400 hover:text-gray-200"
                 onClick={() => setWalletsVisible(false)}
               >
                 &times;
               </button>
             </div>
-            <div className="text-left text-white max-h-96 overflow-y-auto">
+            <div className="text-left text-gray-100 max-h-96 overflow-y-auto">
               <pre className="whitespace-pre-wrap break-words">
                 {JSON.stringify(walletsData, null, 2)}
               </pre>
             </div>
             <div className="mt-4 text-right">
               <button
-                className="px-4 py-2 bg-gray-500 text-white rounded"
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                 onClick={() => setWalletsVisible(false)}
               >
                 Close

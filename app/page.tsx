@@ -8,7 +8,7 @@ import TransferTokens from "./components/TransferTokens";
 import { useAppContext } from "./components/AppContext";
 import AuthButton from "./components/AuthButton";
 import SendRawTransaction from "./components/SendRawTransaction";
-import {fun} from './api/farcaster';
+import { fun } from './api/farcaster';
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -87,15 +87,15 @@ export default function Home() {
   }, [isLoggedIn]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center space-y-6 p-12 bg-violet-200">
-      <div className="text-black font-bold text-3xl mb-8">Okto SDK</div>
+    <main className="flex min-h-screen flex-col items-center space-y-6 p-12 bg-gray-900">
+      <div className="text-purple-300 font-bold text-3xl mb-8">Proof of Follower</div>
       <div className="space-y-6 w-full max-w-lg">
         {/* <div className="space-y-4">
-          <label className="text-black font-semibold">Build Type:</label>
+          <label className="text-purple-300 font-semibold">Build Type:</label>
           <select
             value={buildType}
             onChange={(e) => setBuildType(e.target.value)}
-            className="w-full px-4 py-2 rounded bg-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 rounded bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
             <option value={BuildType.SANDBOX}>Sandbox</option>
             <option value={BuildType.STAGING}>Staging</option>
