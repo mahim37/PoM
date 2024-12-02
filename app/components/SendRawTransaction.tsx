@@ -1,6 +1,34 @@
 import { useState } from "react";
 
-const SendRawTransaction = ({ apiFn }: {apiFn: any}) => {
+export const sendTransaction = async (apiFn: any, score: number) => {
+  const requestData = {
+    network_name: "APTOS_TESTNET",
+    transaction: {
+      transactions: [
+        {
+          function: "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365::main_module_working_sure::add_token_votes",
+          typeArguments: [],
+          functionArguments: [
+            "temp_meme",
+            score,
+          ]
+        }
+      ]
+    }
+  };
+
+  try {
+    console.log(requestData);
+    
+    const result = await apiFn(requestData);
+    console.log(result);
+    console.log(result.orderId);
+  } catch (error) {
+    console.error(`error:`, error);
+  }
+};
+
+const SendRawTransaction = ({ apiFn }: { apiFn: any }) => {
   const [network, setNetwork] = useState<string>("APTOS_TESTNET");
   const [instructions, setInstructions] = useState<any[]>([
     {
@@ -24,31 +52,9 @@ const SendRawTransaction = ({ apiFn }: {apiFn: any}) => {
     "GQkXkHF8LTwyZiZUcBWwYJeJBFEqR4vRCV4J5Xe7zGiQ",
   ]);
 
-  const sendTransaction = async () => {
-    const requestData = {
-    network_name: "APTOS_TESTNET",
-    transaction: {
-      transactions: [
-        {
-          function: "0x1::aptos_account::transfer", 
-          typeArguments: [], 
-          functionArguments:[ 
-            "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365",
-            100000000,
-          ] 
-        }
-      ]
-    }
-    };
-
-    apiFn(requestData)
-      .then((result: any) => {
-        console.log(result);
-        console.log(result.jobId);
-      })
-      .catch((error: any) => {
-        console.error(`error:`, error);
-      });
+  const handleSendTransaction = async () => {
+    const score = 1;
+    await sendTransaction(apiFn,score);
   };
 
   return (
@@ -77,7 +83,7 @@ const SendRawTransaction = ({ apiFn }: {apiFn: any}) => {
       </div>
       <button
         className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700"
-        onClick={sendTransaction}
+        onClick={handleSendTransaction}
       >
         Send Transaction
       </button>
@@ -86,3 +92,4 @@ const SendRawTransaction = ({ apiFn }: {apiFn: any}) => {
 };
 
 export default SendRawTransaction;
+

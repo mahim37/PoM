@@ -1,8 +1,10 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from "react";
 import { useLogout, useGetWallets } from "../../index"; // Path to the custom hook
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useOkto, OktoContextType } from "okto-sdk-react";
+import { sendTransaction } from "../components/SendRawTransaction";
 
 const Page = () => {
   const handleLogout = useLogout();
@@ -13,6 +15,7 @@ const Page = () => {
   const [walletsData, setWalletsData] = useState([]);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { executeRawTransaction } = useOkto() as OktoContextType;
 
   useEffect(() => {
     if (status === "loading") return;
@@ -20,6 +23,7 @@ const Page = () => {
       router.push("/");
     }
   }, [session, status, router]);
+
   const backendUrl = "http://localhost:8000";
   const sendScoreUpdate = async (username: string, multiplier: number) => {
     try {
@@ -39,13 +43,27 @@ const Page = () => {
       }
 
       const data = await response.json();
-      console.log("Score updated:", data);
+      console.log("Score updated:", data.score);
+
+      // Debugging logs
+      console.log("Passing executeRawTransaction to sendTransaction");
+      console.log("Score:", data.score);
+
+      // If the response contains a score, call sendTransaction
+      if (data.score !== undefined) {
+        await sendTransaction(executeRawTransaction, data.score);
+      }
     } catch (error) {
       console.error("Error updating score:", error);
     }
   };
 
   const handleLike = (index: number) => {
+    const confirmLike = confirm(
+      "Are you sure you want to like this? Your decision cannot be reverted."
+    );
+    if (!confirmLike) return;
+
     const newLikes = [...likes];
     newLikes[index] += 1;
     setLikes(newLikes);
@@ -53,6 +71,11 @@ const Page = () => {
   };
 
   const handleDislike = (index: number) => {
+    const confirmDislike = confirm(
+      "Are you sure you want to dislike this? Your decision cannot be reverted."
+    );
+    if (!confirmDislike) return;
+
     const newDislikes = [...dislikes];
     newDislikes[index] += 1;
     setDislikes(newDislikes);

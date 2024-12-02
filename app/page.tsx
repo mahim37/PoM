@@ -30,6 +30,7 @@ export default function Home() {
     getNftOrderDetails,
     showWidgetModal,
     executeRawTransaction,
+    getRawTransactionStatus
   } = useOkto() as OktoContextType;
   const idToken = useMemo(() => (session && session.id_token ? session.id_token : null), [session]);
   const router = useRouter();
@@ -130,10 +131,10 @@ export default function Home() {
           Show Modal
         </button> */}
       </div>
-      {/* <div className="flex flex-col gap-2 w-full max-w-lg">
-        <TransferTokens apiFn={transferTokens} />
+      <div className="flex flex-col gap-2 w-full max-w-lg">
+        {/* <TransferTokens apiFn={transferTokens} /> */}
         <SendRawTransaction apiFn={executeRawTransaction} />
-      </div> */}
+      </div>
     </main>
   );
 }
