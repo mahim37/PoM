@@ -7,42 +7,68 @@ import { useRouter } from "next/navigation";
 const Page = () => {
   const handleLogout = useLogout();
   const getWallets = useGetWallets();
-  const [likes, setLikes] = useState<number[]>([0, 0]); // Two images, initial likes/dislikes are 0
+  const [likes, setLikes] = useState<number[]>([0, 0]);
   const [dislikes, setDislikes] = useState<number[]>([0, 0]);
-  const [walletsVisible, setWalletsVisible] = useState(false); // State to control the visibility of the wallets popup
-  const [walletsData, setWalletsData] = useState([]); // State to hold the wallets data
+  const [walletsVisible, setWalletsVisible] = useState(false);
+  const [walletsData, setWalletsData] = useState([]);
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "loading") return; // Wait for session to load
+    if (status === "loading") return;
     if (!session) {
-      router.push("/"); // Redirect to home if not logged in
+      router.push("/");
     }
   }, [session, status, router]);
+  const backendUrl = "http://localhost:8000";
+  const sendScoreUpdate = async (username: string, multiplier: number) => {
+    try {
+      const response = await fetch(`${backendUrl}/getScore`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          multiplier,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update score");
+      }
+
+      const data = await response.json();
+      console.log("Score updated:", data);
+    } catch (error) {
+      console.error("Error updating score:", error);
+    }
+  };
 
   const handleLike = (index: number) => {
     const newLikes = [...likes];
     newLikes[index] += 1;
     setLikes(newLikes);
+    sendScoreUpdate("manan", 1); // Update score for "manan" with multiplier +1
   };
 
   const handleDislike = (index: number) => {
     const newDislikes = [...dislikes];
     newDislikes[index] += 1;
     setDislikes(newDislikes);
+    sendScoreUpdate("manan", -1); // Update score for "manan" with multiplier -1
   };
 
   const images = [
     "https://crossmint.myfilebase.com/ipfs/QmZHAwoi3AgvGxdiPaEtYdp97SDEHEmJqJyWmsVrmaX6bH",
-    "https://crossmint.myfilebase.com/ipfs/QmQkHRGk4exbXfVNp9UyHerjNjKZZDLeejyw4WZaA8eXzo", // Duplicate for example purposes
+    "https://crossmint.myfilebase.com/ipfs/QmQkHRGk4exbXfVNp9UyHerjNjKZZDLeejyw4WZaA8eXzo",
   ];
 
   const handleGetWallets = async () => {
     try {
       const wallets = await getWallets;
-      setWalletsData(wallets); // Update the state with the fetched wallets data
-      setWalletsVisible(true); // Show the wallets popup
+      setWalletsData(wallets);
+      setWalletsVisible(true);
     } catch (error) {
       console.error("Failed to get wallets:", error);
     }
