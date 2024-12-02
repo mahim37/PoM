@@ -6,20 +6,18 @@ export const sendTransaction = async (apiFn: any, score: number) => {
     transaction: {
       transactions: [
         {
-          function: "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365::main_module_working_sure::add_token_votes",
+          function:
+            "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365::main_module_working_sure::add_token_votes",
           typeArguments: [],
-          functionArguments: [
-            "temp_meme",
-            score,
-          ]
-        }
-      ]
-    }
+          functionArguments: ["temp_meme", score],
+        },
+      ],
+    },
   };
 
   try {
     console.log(requestData);
-    
+
     const result = await apiFn(requestData);
     console.log(result);
     console.log(result.orderId);
@@ -28,7 +26,13 @@ export const sendTransaction = async (apiFn: any, score: number) => {
   }
 };
 
-const SendRawTransaction = ({ apiFn }: { apiFn: any }) => {
+const SendRawTransaction = ({
+  apiFn,
+  score,
+}: {
+  apiFn: any;
+  score: number;
+}) => {
   const [network, setNetwork] = useState<string>("APTOS_TESTNET");
   const [instructions, setInstructions] = useState<any[]>([
     {
@@ -53,13 +57,12 @@ const SendRawTransaction = ({ apiFn }: { apiFn: any }) => {
   ]);
 
   const handleSendTransaction = async () => {
-    const score = 1;
-    await sendTransaction(apiFn,score);
+    await sendTransaction(apiFn, score);
   };
 
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
-      <h2 className="text-2xl font-bold">Execute Raw Solana Transaction</h2>
+      {/* <h2 className="text-2xl font-bold">Execute Raw Solana Transaction</h2>
       <div>
         <label className="block text-sm font-medium text-gray-700">
           Instructions
@@ -71,16 +74,14 @@ const SendRawTransaction = ({ apiFn }: { apiFn: any }) => {
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Signers
-        </label>
+        <label className="block text-sm font-medium text-gray-700">Signers</label>
         <input
           type="text"
           className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           value={signers.join(", ")}
           onChange={(e) => setSigners(e.target.value.split(", "))}
         />
-      </div>
+      </div> */}
       <button
         className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700"
         onClick={handleSendTransaction}
@@ -92,4 +93,3 @@ const SendRawTransaction = ({ apiFn }: { apiFn: any }) => {
 };
 
 export default SendRawTransaction;
-

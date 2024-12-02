@@ -4,7 +4,7 @@ import { useLogout, useGetWallets } from "../../index"; // Path to the custom ho
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useOkto, OktoContextType } from "okto-sdk-react";
-import { sendTransaction } from "../components/SendRawTransaction";
+import  SendRawTransaction  from "../components/SendRawTransaction";
 
 const Page = () => {
   const handleLogout = useLogout();
@@ -49,10 +49,24 @@ const Page = () => {
       console.log("Passing executeRawTransaction to sendTransaction");
       console.log("Score:", data.score);
 
-      // If the response contains a score, call sendTransaction
       if (data.score !== undefined) {
-        await sendTransaction(executeRawTransaction, data.score);
-      }
+        const requestData = {
+            network_name: "APTOS_TESTNET",
+            transaction: {
+              transactions: [
+                {
+                  function:
+                    "0xc987d0b6e06fdfad7d2b690561ab5f36641162893fe2fd0376fa222452d89365::main_module_working_sure::add_token_votes",
+                  typeArguments: [],
+                  functionArguments: ["temp_meme", Math.round(data.score)],
+                },
+              ],
+            },
+          };
+        
+        const res = await executeRawTransaction(requestData);
+        console.log(res);
+    }
     } catch (error) {
       console.error("Error updating score:", error);
     }
@@ -111,6 +125,7 @@ const Page = () => {
       >
         Get Wallets
       </button>
+
       <h1 className="text-3xl font-bold mb-10 text-gray-700">NFT's</h1>
       <div className="flex flex-col items-center gap-4 px-6 md:px-20">
         {images.map((image, index) => (

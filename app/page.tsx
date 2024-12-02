@@ -133,7 +133,6 @@ export default function Home() {
       </div>
       <div className="flex flex-col gap-2 w-full max-w-lg">
         {/* <TransferTokens apiFn={transferTokens} /> */}
-        <SendRawTransaction apiFn={executeRawTransaction} />
       </div>
     </main>
   );
