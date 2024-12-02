@@ -2,12 +2,12 @@ module token_owner::test {
     #[test_only]
     use std::signer;
     #[test_only]
-    use token_owner::fungible_asset_pom;
+    use token_owner::fungible_asset_pom_hello;
     use std::debug;
 
     #[test(owner=@token_owner)]
     fun test_init_module(owner: &signer) {
-        fungible_asset_pom::test_init_module(owner);
+        token_owner::fungible_asset_pom_hello::test_init_module(owner);
     }
 
     #[test(
@@ -17,16 +17,16 @@ module token_owner::test {
     )]
     fun test_mint(owner: &signer, parent_address: &signer, user1: &signer){
         // Initialising the tests
-        fungible_asset_pom::test_init_module(owner);
+        token_owner::fungible_asset_pom_hello::test_init_module(owner);
 
         // Checking from owner
-        fungible_asset_pom::admin_mint(owner, signer::address_of(parent_address), 1000);
-        let balance = fungible_asset_pom::balance(signer::address_of(parent_address));
+        token_owner::fungible_asset_pom_hello::admin_mint(owner, signer::address_of(parent_address), 1000);
+        let balance = token_owner::fungible_asset_pom_hello::balance(signer::address_of(parent_address));
         assert!(balance == 1000, 1);
 
         // Checking from parent_address
-        fungible_asset_pom::admin_mint(parent_address, signer::address_of(user1), 1000);
-        let balance = fungible_asset_pom::balance(signer::address_of(user1));
+        token_owner::fungible_asset_pom_hello::admin_mint(parent_address, signer::address_of(user1), 1000);
+        let balance = token_owner::fungible_asset_pom_hello::balance(signer::address_of(user1));
         assert!(balance == 1000, 2);
     }
 }
