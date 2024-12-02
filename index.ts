@@ -15,6 +15,7 @@ export const authenticate = async (idToken: string): Promise<any> => {
       } else {
         reject(error);
       }
+      
     });
   });
 };
