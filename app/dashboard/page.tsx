@@ -126,7 +126,7 @@ const Page = () => {
         Get Wallets
       </button>
 
-      <h1 className="text-3xl font-bold mb-10 text-purple-300">NFT's</h1>
+      <h1 className="text-3xl font-bold mb-10 text-purple-300">Meme Coins</h1>
       <div className="flex flex-col items-center gap-4 px-6 md:px-20">
         {images.map((image, index) => (
           <div
